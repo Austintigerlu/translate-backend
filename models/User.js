@@ -20,7 +20,10 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     profilePic: String,
-    messages : [mongoose.Types.ObjectId],
+    messages : [{
+        type: mongoose.Types.ObjectId,
+        default: []
+    }],
     translations : [mongoose.Types.ObjectId]
 },
     {

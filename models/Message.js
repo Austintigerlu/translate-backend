@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const MessageSchema = new mongoose.Schema({
     recipient: mongoose.Types.ObjectId,
     sender: mongoose.Types.ObjectId,
-    content: String 
+    content: String
 },
     {timestamps: true}
 );
