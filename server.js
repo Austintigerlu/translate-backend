@@ -19,6 +19,22 @@ app.get('/users', async (req, res) => {
         res.status(400).json(error);
     }
 })
+app.get('/users/:username', async (req, res) =>{
+    try{
+        res.json(await db.User.findOne({username: req.params.username}))
+    }
+    catch{
+        res.status(400).json(error);
+    }
+})
+app.get('/users/:email', async (req, res) =>{
+    try{
+        res.json(await db.User.findOne({username: req.params.email}))
+    }
+    catch{
+        res.status(400).json(error);
+    }
+})
 app.get('/messages/:id', async (req, res) => {
     try {
         const user = await db.User.findById(req.params.id).populate('messages');
