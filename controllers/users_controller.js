@@ -95,7 +95,7 @@ function verifyJWT(req,res,next){
 }
 
 router.get("/username", verifyJWT, (req,res) => {
-    res.json({isLoggedIn: true, username: req.user.Username})
+    res.json({isLoggedIn: true, username: req.user.username})
 })
 
  router.delete('/:id', async (req, res) => {
