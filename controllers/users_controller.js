@@ -98,20 +98,20 @@ router.get("/username", verifyJWT, (req,res) => {
     res.json({isLoggedIn: true, username: req.user.username})
 })
 
- router.delete('/:id', async (req, res) => {
-    try {
-        const deletedUser = await db.User.findByIdAndDelete(req.params.id);
-    } 
-    catch (error) {
-        res.status(400).json(error);
-    }
-})
-router.put('/:id', async (req, res)=>{
-    try{
-        const updatedUser = await db.User.findByIdAndUpdate(req.params.id, req.body);
-    }
-    catch(error){
-        res.status(400).json(error);
-    }
-})
+//  router.delete('/:id', async (req, res) => {
+//     try {
+//         const deletedUser = await db.User.findByIdAndDelete(req.params.id);
+//     } 
+//     catch (error) {
+//         res.status(400).json(error);
+//     }
+// })
+// router.put('/:id', async (req, res)=>{
+//     try{
+//         const updatedUser = await db.User.findByIdAndUpdate(req.params.id, req.body);
+//     }
+//     catch(error){
+//         res.status(400).json(error);
+//     }
+// })
 module.exports = router;
