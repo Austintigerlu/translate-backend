@@ -16,11 +16,7 @@ const TranslationSchema = new mongoose.Schema({
     translated_language: {
         type: String,
         required: true
-    },
-    content: {
-        type: String,
-        required: true
-    } 
+    }
 },
     {timestamps: true}
 );

@@ -22,9 +22,12 @@ const UserSchema = new mongoose.Schema({
     profilePic: String,
     messages : [{
         type: mongoose.Types.ObjectId,
-        default: []
+        ref: 'Message'
     }],
-    translations : [mongoose.Types.ObjectId]
+    translations : [{
+        type: mongoose.Types.ObjectId,
+        ref : 'Translation'
+    }]
 },
     {
         timestamps: true
