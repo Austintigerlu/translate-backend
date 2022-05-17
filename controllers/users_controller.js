@@ -96,7 +96,7 @@ function verifyJWT(req,res,next){
 }
 
 router.get("/username", verifyJWT, (req,res) => {
-    res.json({isLoggedIn: true, username: req.user.Username})
+    res.json({isLoggedIn: true, username: req.user.username})
 })
 router.get('/get/:username', async (req, res)=>{
     try{
