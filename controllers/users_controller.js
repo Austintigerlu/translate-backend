@@ -37,8 +37,9 @@ const { User } = require('../models');
 })
 
 router.post("/login", (req,res) => {
+    
     const userLogin = req.body;
-
+    
     User.findOne({username: userLogin.username})
     .then(dbUser => {
         if(!dbUser) {
@@ -53,7 +54,6 @@ router.post("/login", (req,res) => {
                 const payload = {
                     id: dbUser._id,
                     username: dbUser.username,
-                    email: dbUser.email,
                     // info in the JWT
                 }
                 jwt.sign(
@@ -90,7 +90,6 @@ function verifyJWT(req,res,next){
             req.user = {};
             req.user.id = decoded.id
             req.user.username =decoded.username
-            req.user.email = decoded.email
             next()
         })
     } else {
@@ -99,7 +98,8 @@ function verifyJWT(req,res,next){
 }
 
 router.get("/isUserAuth", verifyJWT, (req,res) => {
-    res.json({isLoggedIn: true, username: req.user.username, email: req.user.email})
+    console.log(req.body);
+    res.json({isLoggedIn: true, username: req.user.username})
 })
 
 router.get('/get/:username', async (req, res)=>{
