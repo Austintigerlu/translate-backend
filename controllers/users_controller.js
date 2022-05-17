@@ -29,7 +29,6 @@ const { User } = require('../models');
             username: user.username.toLowerCase(),
             email: user.email.toLowerCase(),
             password: user.password,
-            profilePic: user.profilePic,
         })
         dbUser.save();
         res.json({message: "Success"})
