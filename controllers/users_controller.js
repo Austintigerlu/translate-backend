@@ -110,6 +110,7 @@ router.get('/get/:username', async (req, res)=>{
         res.status(400).json(error);
     }
 })
+
 router.delete('/:id', async (req, res) => {
     try {
         const deletedUser = await db.User.findByIdAndDelete(req.params.id);
