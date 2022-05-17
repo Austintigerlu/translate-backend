@@ -52,16 +52,18 @@ router.post("/login", (req,res) => {
                 const payload = {
                     id: dbUser._id,
                     username: dbUser.username,
+                    email: dbUser.email,
+                    // info in the JWT
                 }
                 jwt.sign(
                     payload,
                     "secret",
-                    {expiresIn: 1000 * 60 * 60 * 24},
+                    {expiresIn: 86400},
                     (err, token) => {
                         if(err) return res.json({message: err})
                         return res.json({
                             message: "Success",
-                            token: token,
+                            token: "Bearer " + token,
                         })
                     }
                 )
@@ -76,10 +78,10 @@ router.post("/login", (req,res) => {
 })
 
 function verifyJWT(req,res,next){
-    const token = req.headers["access-token"]
+    const token = req.headers["x-access-token"]?.split(' ')[1]
 
     if(token) {
-        jwt.verify(token, "secret", (err,decoded) => {
+        jwt.verify(token, "secret", (err, decoded) => {
             if(err) return res.json({
                 isLoggedIn: false,
                 message: "Failed to Login"
@@ -87,6 +89,7 @@ function verifyJWT(req,res,next){
             req.user = {};
             req.user.id = decoded.id
             req.user.username =decoded.username
+            req.user.email = decoded.email
             next()
         })
     } else {
@@ -94,24 +97,24 @@ function verifyJWT(req,res,next){
     }
 }
 
-router.get("/username", verifyJWT, (req,res) => {
-    res.json({isLoggedIn: true, username: req.user.username})
+router.get("/isUserAuth", verifyJWT, (req,res) => {
+    res.json({isLoggedIn: true, username: req.user.username, email: req.user.email})
 })
 
-//  router.delete('/:id', async (req, res) => {
-//     try {
-//         const deletedUser = await db.User.findByIdAndDelete(req.params.id);
-//     } 
-//     catch (error) {
-//         res.status(400).json(error);
-//     }
-// })
-// router.put('/:id', async (req, res)=>{
-//     try{
-//         const updatedUser = await db.User.findByIdAndUpdate(req.params.id, req.body);
-//     }
-//     catch(error){
-//         res.status(400).json(error);
-//     }
-// })
+ router.delete('/:id', async (req, res) => {
+    try {
+        const deletedUser = await db.User.findByIdAndDelete(req.params.id);
+    } 
+    catch (error) {
+        res.status(400).json(error);
+    }
+})
+router.put('/:id', async (req, res)=>{
+    try{
+        const updatedUser = await db.User.findByIdAndUpdate(req.params.id, req.body);
+    }
+    catch(error){
+        res.status(400).json(error);
+    }
+})
 module.exports = router;
