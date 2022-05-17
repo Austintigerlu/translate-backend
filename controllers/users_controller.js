@@ -48,6 +48,7 @@ router.post("/login", (req,res) => {
         }
         bcrypt.compare(userLogin.password, dbUser.password)
         .then(isCorrect => { 
+            console.log(isCorrect)
             if(isCorrect) {
                 const payload = {
                     id: dbUser._id,
@@ -101,7 +102,16 @@ router.get("/isUserAuth", verifyJWT, (req,res) => {
     res.json({isLoggedIn: true, username: req.user.username, email: req.user.email})
 })
 
- router.delete('/:id', async (req, res) => {
+router.get('/get/:username', async (req, res)=>{
+    try{
+        req.json(await db.User.findOne({username: req.params.username}));
+    }
+    catch(error){
+        res.status(400).json(error);
+    }
+})
+
+router.delete('/:id', async (req, res) => {
     try {
         const deletedUser = await db.User.findByIdAndDelete(req.params.id);
     } 

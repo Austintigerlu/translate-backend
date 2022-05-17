@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 const db = require('../models');
+const { populate } = require('../models/Message');
 
  router.get('/:id', async (req, res) => {
     try {
@@ -17,9 +18,16 @@ const db = require('../models');
 
  router.post('/:id/new', async (req, res) => {
     try {
+        const sender = await db.User.findOne({username: req.body.sender}).populate('messages')
+        const recipient = await db.User.findOne({username: req.body.recipient}).populate('messages');
+        const senderPastMessages = sender.messages
+        const recipientPastMessages = recipient.messages
+        req.body.sender = sender._id
+        req.body.recipient = recipient._id;
         const newMessage = await db.Message.create(req.body);
-        const pastMessages = db.User.findById(req.params.id).messages
-        const user = await db.User.findByIdAndUpdate(req.params.id, {messages: [...pastMessages, newMessage._id]});
+        console.log(sender)
+        await db.User.findByIdAndUpdate(sender._id, {messages: [...senderPastMessages, newMessage._id]})
+        await db.User.findByIdAndUpdate(recipient._id, {messages: [...recipientPastMessages, newMessage._id]})
     } catch (error) {
         console.log(error);
         req.error = error;
