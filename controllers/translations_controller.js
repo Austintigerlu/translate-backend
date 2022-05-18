@@ -18,10 +18,13 @@ const db = require('../models');
     try {
         // console.log(req.body);
         const newTranslation = await db.Translation.create(req.body);
-        let pastTranslation = await db.User.findById(req.params.id).translations
-        if(!pastTranslation)
-            pastTranslation = []
-        const user = await db.User.findByIdAndUpdate(req.params.id, {translations: [...pastTranslation, newTranslation._id]});
+        const user1 = await db.User.findById(req.params.id)
+        let pastTranslation = user1.translations
+        let user = null;
+        if(pastTranslation === undefined)
+            user = await db.User.findByIdAndUpdate(req.params.id, {translations: [newTranslation._id]});
+        else
+            user = await db.User.findByIdAndUpdate(req.params.id, {translations: [...pastTranslation, newTranslation._id]});
         res.json({message: 'Success'})
     } catch (error) {
         res.json({message: 'Failed', err : error})
