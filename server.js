@@ -11,7 +11,8 @@ const controllers = require('./controllers');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use(morgan());
+app.use(morgan('dev'))
+app.use(express.json())
 app.use('/translations', controllers.translations);
 app.use('/users', controllers.users);
 app.use('/messages', controllers.messages);
