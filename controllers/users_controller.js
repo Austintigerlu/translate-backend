@@ -100,7 +100,22 @@ router.get("/isUserAuth", verifyJWT, (req,res) => {
     console.log(req.body);
     res.json({isLoggedIn: true, username: req.user.username})
 })
+router.post('/updateprofile/:id', async (req, res) => {
+    const user = req.body;
+    const takenUsername = await User.findOne({username: user.username});
+    const takenEmail = await User.findOne({email: user.email})
 
+    if (takenUsername || takenEmail){
+        res.json({message: "Username or email has already been taken"})
+    } 
+    else {
+        const currentUser = await db.User.findByIdAndUpdate(req.params.id, {
+            username: user.username,
+            email : user.email
+        }) 
+        res.json({message: "Success"})
+    }
+})
 router.get('/get/:username', async (req, res)=>{
     try{
         res.json(await db.User.findOne(req.params).populate('translations').populate('messages'));
