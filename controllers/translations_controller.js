@@ -22,16 +22,18 @@ const db = require('../models');
         if(!pastTranslation)
             pastTranslation = []
         const user = await db.User.findByIdAndUpdate(req.params.id, {translations: [...pastTranslation, newTranslation._id]});
+        res.json({message: 'Success'})
     } catch (error) {
-        
+        res.json({message: 'Failed', err : error})
     }
 })
-router.delete('/translations/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try{
         const deletedTranslation = db.User.findByIdAndDelete(req.params.id);
+        res.json({message: 'Success'})
     }
     catch(error){
-        es.status(400).json(error);
+        res.status(400).json(error);
     }
 })
 module.exports = router;
