@@ -103,7 +103,7 @@ router.get("/isUserAuth", verifyJWT, (req,res) => {
 
 router.get('/get/:username', async (req, res)=>{
     try{
-        req.json(await db.User.findOne({username: req.params.username}));
+        res.json(await db.User.findOne(req.params).populate('translations').populate('messages'));
     }
     catch(error){
         res.status(400).json(error);
