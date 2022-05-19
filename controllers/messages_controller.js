@@ -5,15 +5,25 @@ const router = express.Router()
 const db = require('../models');
 const { populate } = require('../models/Message');
 
- router.get('/:id', async (req, res) => {
-    try {
-        const user = await db.User.findById(req.params.id).populate('messages');
-        const messages = user.messages;
-        console.log(messages);
-        res.json(messages);
-    } catch (error) {
-        res.status(400).json(error);
-    }
+ router.get('/:id', (req, res) => {
+    db.User
+    .findOne({_id: req.params.id })
+    .populate({
+        path: 'messages',
+        populate: {
+            path: 'recipient'
+        }
+    })
+    .populate({
+        path: 'messages',
+        populate: {
+            path: 'sender',
+        }
+    })
+    .then(user => {
+       res.json(user.messages); 
+    })
+    .catch(err => res.status(400).json(err))
 })
 
  router.post('/:id/new', async (req, res) => {
