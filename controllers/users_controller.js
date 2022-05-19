@@ -137,6 +137,7 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res)=>{
     try{
         const updatedUser = await db.User.findByIdAndUpdate(req.params.id, req.body);
+        res.json({message: 'Success'});
     }
     catch(error){
         res.status(400).json(error);
