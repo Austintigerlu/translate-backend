@@ -38,6 +38,7 @@ const { populate } = require('../models/Message');
         console.log(sender)
         await db.User.findByIdAndUpdate(sender._id, {messages: [...senderPastMessages, newMessage._id]})
         await db.User.findByIdAndUpdate(recipient._id, {messages: [...recipientPastMessages, newMessage._id]})
+        res.json({message : 'Success'})
     } catch (error) {
         console.log(error);
         req.error = error;
