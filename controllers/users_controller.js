@@ -100,6 +100,7 @@ router.get("/isUserAuth", verifyJWT, (req,res) => {
     console.log(req.body);
     res.json({isLoggedIn: true, username: req.user.username})
 })
+
 router.post('/updateprofile/:id', async (req, res) => {
     const user = req.body;
     const takenUsername = await User.findOne({username: user.username});
